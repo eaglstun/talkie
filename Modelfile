@@ -1,0 +1,34 @@
+# Modelfile for serving talkie-1930 in Ollama *with system-prompt support*.
+#
+# THE BUG THIS FIXES
+# ------------------
+# Ollama's auto-generated template for talkie-1930 was:
+#
+#     <|user|>{{ .Prompt }}<|end|><|assistant|>
+#
+# There is no <|system|> slot in it, so any system prompt passed via
+# `ollama run talkie-1930 --system "..."` (or the API `system` field) is
+# silently DISCARDED before it ever reaches the model — not resisted, dropped.
+#
+# talkie's real chat format (see src/talkie/chat.py:format_chat) does have a
+# system role. The template below wires it back up so the system prompt is
+# rendered into the prompt the model actually sees.
+#
+# USAGE
+# -----
+#   # Requires the base `talkie-1930` model already imported into Ollama via the
+#   # TalkieForCausalLM architecture port (see CLAUDE.md → "Running on Apple Silicon").
+#   ollama create talkie-1930-sys -f Modelfile
+#   ollama run talkie-1930-sys --system "Thou art a sentimental poet." "What is the wireless telephone?"
+#
+# NOTE: a persona only steers talkie if 1930 contained one. "Poet" or "minister"
+# work; "Silicon Valley engineer" gets ignored because the corpus has no such word.
+
+FROM talkie-1930
+
+TEMPLATE """{{ if .System }}<|system|>{{ .System }}<|end|>{{ end }}<|user|>{{ .Prompt }}<|end|><|assistant|>"""
+
+PARAMETER stop <|end|>
+PARAMETER stop <|endoftext|>
+PARAMETER stop <|user|>
+PARAMETER stop <|system|>
