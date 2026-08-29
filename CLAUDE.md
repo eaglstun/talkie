@@ -31,6 +31,27 @@ but not practically usable at this size.
 `tests/` directory** — `uv run pytest` currently collects nothing. If you add tests,
 create `tests/` and they'll be picked up automatically.
 
+## Running on Apple Silicon (Mac)
+
+This branch (`mlx-backend`, PR #2) adds an **MLX backend** under `src/talkie/mlx/` with a
+separate `talkie-mlx` CLI — no CUDA required. The torch pin is scoped to Linux here (see
+below), so `uv sync --extra mlx` resolves a normal macOS MPS wheel. Run against converted
+MLX weights:
+
+```bash
+uv sync --extra mlx
+uv run talkie-mlx --model-dir <converted-mlx-dir> --stream "..."
+```
+
+Two ways this model is served on the Mac (full detail in the `talkie-mlx-mac-setup` and
+`talkie-on-ollama-arch` Claude memories):
+
+- **Standalone MLX** — the `talkie-mlx` CLI above. Fast on Apple Silicon; reloads weights
+  per CLI invocation, so keep a Python session open (`MLXTalkie`) for back-and-forth.
+- **Native Ollama** — a custom `TalkieForCausalLM` architecture was ported into an Ollama
+  fork (`~/Documents/dev/ollama-v0.30.2`, `x/models/talkie/`) so Ollama serves it as
+  `talkie-1930`. The `src/talkie/mlx/model.py` here is the reference that port mirrors.
+
 ## Architecture
 
 Request flow: `cli.py` / public API → `generate.Talkie` (the one class users touch) →
