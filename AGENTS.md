@@ -28,12 +28,25 @@ but not practically usable at this size.
 ### Tests
 
 ```bash
-uv run pytest                 # Torch, sampling, and chat tests
+uv run pytest                 # Torch, tokenizer, download, sampling, and chat tests
 uv run --extra mlx pytest     # also exercises Torch↔MLX parity and KV caching
 ```
 
 The tests use a randomly initialized tiny model and never download checkpoints.
 MLX tests skip at collection time when MLX or a Metal device is unavailable.
+
+Compatibility floors are intentional and have focused regression coverage:
+
+- `tiktoken>=0.14.0` is covered by base/IT round-trip and special-token tests in
+  `tests/test_tokenizer.py`;
+- `huggingface-hub>=1.16.1` retains compatibility with the PyTorch fork's Spin
+  0.18 / Click <8.4 environment and is covered by `tests/test_download.py`; and
+- the MLX extra uses `safetensors>=0.8.0`, covered by the checkpoint-loading path
+  in `tests/test_mlx_parity.py`.
+
+The local PyTorch fork checkout is `/Users/eeaglstun/Documents/dev/pytorch/`.
+Its `.venv` is the compatibility environment for validating these dependency
+floors; it is not required by CUDA or MLX users.
 
 ## Running on Apple Silicon (Mac)
 

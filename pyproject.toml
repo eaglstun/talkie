@@ -8,7 +8,7 @@ requires-python = ">=3.11"
 authors = [{ name = "talkie-lm" }]
 dependencies = [
     "torch>=2.1.0",
-    "tiktoken>=0.6.0",
+    "tiktoken>=0.14.0",
     # This floor supports the PyTorch fork's Spin 0.18 / Click <8.4 toolchain;
     # standalone Talkie environments resolve newer Hub releases normally.
     "huggingface-hub>=1.16.1",
@@ -29,7 +29,7 @@ talkie = "talkie.cli:main"
 talkie-mlx = "talkie.mlx.cli:main"
 
 [project.urls]
-Repository = "https://github.com/talkie-lm/talkie"
+Repository = "https://github.com/eaglstun/talkie"
 
 [build-system]
 requires = ["hatchling"]

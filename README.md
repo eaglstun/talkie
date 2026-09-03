@@ -55,7 +55,7 @@ Reproducible performance measurements and methodology live in
 ## Installation
 
 ```bash
-git clone https://github.com/talkie-lm/talkie.git
+git clone https://github.com/eaglstun/talkie.git
 cd talkie
 uv sync
 ```
@@ -64,8 +64,14 @@ uv sync
 
 - Python >= 3.11
 - PyTorch >= 2.1
+- tiktoken >= 0.14
+- huggingface-hub >= 1.16.1
 - CUDA GPU with >= 28 GB VRAM (bfloat16 inference)
 - ~26-50 GB disk space per model
+
+The dependency floors are compatibility baselines rather than exact pins; the
+tested resolution is recorded in `uv.lock`. The Hugging Face Hub floor also
+works with the PyTorch fork's Spin 0.18 / Click <8.4 development environment.
 
 ### Apple Silicon / MLX
 
@@ -74,6 +80,8 @@ Talkie also includes an optional MLX backend for Apple Silicon Macs. Install the
 ```bash
 uv sync --extra mlx
 ```
+
+The MLX extra currently requires MLX >= 0.32.2 and safetensors >= 0.8.0.
 
 Download or convert an MLX-format Talkie directory, then run:
 
