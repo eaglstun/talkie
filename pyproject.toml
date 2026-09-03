@@ -9,7 +9,9 @@ authors = [{ name = "talkie-lm" }]
 dependencies = [
     "torch>=2.1.0",
     "tiktoken>=0.6.0",
-    "huggingface-hub>=0.20.0",
+    # This floor supports the PyTorch fork's Spin 0.18 / Click <8.4 toolchain;
+    # standalone Talkie environments resolve newer Hub releases normally.
+    "huggingface-hub>=1.16.1",
 ]
 
 [project.optional-dependencies]
