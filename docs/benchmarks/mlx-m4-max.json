@@ -1,0 +1,63 @@
+{
+  "generated_at": "2026-09-03T00:45:09.973855+00:00",
+  "backend": "mlx",
+  "model_snapshot": "dd65a6e586243a26ddde3fc5ce4e3e0ce4e26500",
+  "model_config": {
+    "vocab_size": 65540,
+    "n_layer": 40,
+    "n_head": 40,
+    "n_embd": 5120,
+    "head_dim": 128,
+    "rope_base": 1000000.0,
+    "max_seq_len": 2048,
+    "dtype": "bfloat16",
+    "style": "it"
+  },
+  "model_init_seconds": 0.1453998328652233,
+  "peak_metal_memory_gib": 26.16341899521649,
+  "mlx_version": "0.32.2",
+  "python_version": "3.14.2",
+  "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+  "hardware": {
+    "Model Name": "MacBook Pro",
+    "Model Identifier": "Mac16,5",
+    "Chip": "Apple M4 Max",
+    "Total Number of Cores": "16 (12 Performance and 4 Efficiency)",
+    "Memory": "64 GB",
+    "System Version": "macOS 26.5.2 (25F84)"
+  },
+  "talkie_revision": "63c1487b7a3b24d616b68abe9cc4c9f2f9ea053a",
+  "talkie_worktree_dirty": true,
+  "results": [
+    {
+      "prompt_tokens": 32,
+      "decode_tokens": 32,
+      "runs": 3,
+      "median_time_to_first_token_seconds": 0.45629691588692367,
+      "median_prefill_tokens_per_second": 70.12977490281793,
+      "median_decode_seconds": 5.073102333117276,
+      "median_decode_tokens_per_second": 6.3077773517604,
+      "time_to_first_token_samples_seconds": [
+        0.398061583051458, 0.5113204168155789, 0.45629691588692367
+      ],
+      "decode_samples_seconds": [
+        5.138034417061135, 5.073102333117276, 5.020797417033464
+      ]
+    },
+    {
+      "prompt_tokens": 512,
+      "decode_tokens": 1,
+      "runs": 3,
+      "median_time_to_first_token_seconds": 2.387782417004928,
+      "median_prefill_tokens_per_second": 214.42489749221707,
+      "median_decode_seconds": 0.30953783285804093,
+      "median_decode_tokens_per_second": 3.230622863663377,
+      "time_to_first_token_samples_seconds": [
+        2.6061535838525742, 2.3336475829128176, 2.387782417004928
+      ],
+      "decode_samples_seconds": [
+        0.2929577089380473, 0.30953783285804093, 0.368145874934271
+      ]
+    }
+  ]
+}

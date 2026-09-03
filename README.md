@@ -41,6 +41,9 @@ The patched PyTorch checkout is an optional development path. CUDA users and
 users of the MLX backend do not need it. This Talkie fork does not alter the
 published model weights or the model's architecture.
 
+Reproducible performance measurements and methodology live in
+[`docs/benchmarks/`](docs/benchmarks/).
+
 ## Models
 
 | Name                   | HuggingFace                                                                             | Style | Description                                              |
