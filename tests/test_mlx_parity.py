@@ -1,6 +1,7 @@
 import numpy as np
 import pytest
 import torch
+from safetensors.torch import save_file
 
 try:
     import mlx.core as mx
@@ -76,3 +77,14 @@ def test_mlx_cached_decode_matches_full_sequence() -> None:
     for keys, values in updated_cache:
         assert keys.shape == (1, mlx_model.config.n_head, 4, mlx_model.config.head_dim)
         assert values.shape == keys.shape
+
+
+def test_mlx_loads_torch_safetensors(tmp_path) -> None:
+    path = tmp_path / "weights.safetensors"
+    expected = torch.arange(12, dtype=torch.float32).reshape(3, 4)
+    save_file({"weight": expected}, path, metadata={"format": "mlx"})
+
+    actual = mx.load(path)["weight"]
+    mx.eval(actual)
+
+    np.testing.assert_array_equal(np.array(actual), expected.numpy())
