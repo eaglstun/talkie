@@ -8,15 +8,28 @@ requires-python = ">=3.11"
 authors = [{ name = "talkie-lm" }]
 dependencies = [
     "torch>=2.1.0",
-    "tiktoken>=0.6.0",
-    "huggingface-hub>=0.20.0",
+    "tiktoken>=0.14.0",
+    # This floor supports the PyTorch fork's Spin 0.18 / Click <8.4 toolchain;
+    # standalone Talkie environments resolve newer Hub releases normally.
+    "huggingface-hub>=1.16.1",
 ]
+
+[project.optional-dependencies]
+mlx = [
+    "mlx>=0.32.2",
+    "numpy",
+    "safetensors>=0.8.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
 
 [project.scripts]
 talkie = "talkie.cli:main"
+talkie-mlx = "talkie.mlx.cli:main"
 
 [project.urls]
-Repository = "https://github.com/talkie-lm/talkie"
+Repository = "https://github.com/eaglstun/talkie"
 
 [build-system]
 requires = ["hatchling"]
@@ -31,7 +44,9 @@ url = "https://download.pytorch.org/whl/cu128"
 explicit = true
 
 [tool.uv.sources]
-torch = { index = "pytorch-cu128" }
+# CUDA wheels only make sense on Linux; on macOS (Apple Silicon) fall back to
+# the default PyPI torch wheel, which ships MPS/CPU support.
+torch = [{ index = "pytorch-cu128", marker = "sys_platform == 'linux'" }]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

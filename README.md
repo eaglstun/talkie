@@ -8,26 +8,54 @@
 
 `talkie-1930-13b-base` is a 13b language model trained on pre-1931 English-language text.
 
-`talkie-1930-13b-it` has been instruction-tuned using a novel instruction-following dataset built from pre-1931 reference works including etiquette manuals, letter-writing manuals, encyclopedias, and poetry collections. It has also undergone reinforcement learning using online DPO to improve instruction-following capabilities. 
+`talkie-1930-13b-it` has been instruction-tuned using a novel instruction-following dataset built from pre-1931 reference works including etiquette manuals, letter-writing manuals, encyclopedias, and poetry collections. It has also undergone reinforcement learning using online DPO to improve instruction-following capabilities.
 
-We also provide a 'modern' base model, `talkie-web-13b-base`, with the same architecture and training FLOPs as `talkie-1930`, but trained on FineWeb, to allow for controlled comparisons between modern and vintage models. Note that we need to be careful about the claims we make contrasting the behavior and capabilities of the models, because temporal coverage is not the only difference in the pretraining corpora. For example, the distribution of subject matters differs significantly. 
+We also provide a 'modern' base model, `talkie-web-13b-base`, with the same architecture and training FLOPs as `talkie-1930`, but trained on FineWeb, to allow for controlled comparisons between modern and vintage models. Note that we need to be careful about the claims we make contrasting the behavior and capabilities of the models, because temporal coverage is not the only difference in the pretraining corpora. For example, the distribution of subject matters differs significantly.
 
 See our [blog post](https://talkie-lm.com/) for details.
 
 This package provides a simple Python API and CLI to download models from HuggingFace and run inference.
 
+## Why this fork exists
+
+This repository is a downstream engineering fork of
+[`talkie-lm/talkie`](https://github.com/talkie-lm/talkie). The upstream project is
+the source of the model architecture, weights, and original inference code. This
+fork exists to make that work practical on Apple Silicon and easier to integrate
+with local inference runtimes. It adds:
+
+- a native MLX backend and a checkpoint converter for Apple Silicon;
+- MLX-LM-compatible model metadata; and
+- an Ollama `Modelfile` that preserves Talkie's dedicated system-prompt slot.
+
+Apple Silicon development also uses a separate
+[`eaglstun/pytorch`](https://github.com/eaglstun/pytorch) fork. Upstream PyTorch's
+MPS-to-CPU copy path uses Metal blits that require 4-byte-aligned offsets. Slices
+of sub-4-byte types such as `bool`, `uint8`, and `float16` can begin at an
+unaligned byte offset and hit that restriction. The PyTorch fork routes those
+copies through an offset-tolerant kernel while retaining the blit path for aligned
+copies. This makes sliced MPS results safe to materialize on the CPU and is
+covered by a focused MPS regression test.
+
+The patched PyTorch checkout is an optional development path. CUDA users and
+users of the MLX backend do not need it. This Talkie fork does not alter the
+published model weights or the model's architecture.
+
+Reproducible performance measurements and methodology live in
+[`docs/benchmarks/`](docs/benchmarks/).
+
 ## Models
 
-| Name | HuggingFace | Style | Description |
-|------|-------------|-------|-------------|
-| `talkie-1930-13b-base` | [talkie-lm/talkie-1930-13b-base](https://huggingface.co/talkie-lm/talkie-1930-13b-base) | Base | 1930-era base language model |
-| `talkie-1930-13b-it` | [talkie-lm/talkie-1930-13b-it](https://huggingface.co/talkie-lm/talkie-1930-13b-it) | IT | 1930-era instruction-tuned model |
-| `talkie-web-13b-base` | [talkie-lm/talkie-web-13b-base](https://huggingface.co/talkie-lm/talkie-web-13b-base) | Base | Same architecture as talkie-1930, but trained on FineWeb |
+| Name                   | HuggingFace                                                                             | Style | Description                                              |
+| ---------------------- | --------------------------------------------------------------------------------------- | ----- | -------------------------------------------------------- |
+| `talkie-1930-13b-base` | [talkie-lm/talkie-1930-13b-base](https://huggingface.co/talkie-lm/talkie-1930-13b-base) | Base  | 1930-era base language model                             |
+| `talkie-1930-13b-it`   | [talkie-lm/talkie-1930-13b-it](https://huggingface.co/talkie-lm/talkie-1930-13b-it)     | IT    | 1930-era instruction-tuned model                         |
+| `talkie-web-13b-base`  | [talkie-lm/talkie-web-13b-base](https://huggingface.co/talkie-lm/talkie-web-13b-base)   | Base  | Same architecture as talkie-1930, but trained on FineWeb |
 
 ## Installation
 
 ```bash
-git clone https://github.com/talkie-lm/talkie.git
+git clone https://github.com/eaglstun/talkie.git
 cd talkie
 uv sync
 ```
@@ -36,8 +64,42 @@ uv sync
 
 - Python >= 3.11
 - PyTorch >= 2.1
+- tiktoken >= 0.14
+- huggingface-hub >= 1.16.1
 - CUDA GPU with >= 28 GB VRAM (bfloat16 inference)
 - ~26-50 GB disk space per model
+
+The dependency floors are compatibility baselines rather than exact pins; the
+tested resolution is recorded in `uv.lock`. The Hugging Face Hub floor also
+works with the PyTorch fork's Spin 0.18 / Click <8.4 development environment.
+
+### Apple Silicon / MLX
+
+Talkie also includes an optional MLX backend for Apple Silicon Macs. Install the optional extra:
+
+```bash
+uv sync --extra mlx
+```
+
+The MLX extra currently requires MLX >= 0.32.2 and safetensors >= 0.8.0.
+
+Download or convert an MLX-format Talkie directory, then run:
+
+```bash
+uv run talkie-mlx --model-dir /path/to/talkie-1930-13b-it-mlx \
+  --max-tokens 80 \
+  "Write a short note about radio."
+```
+
+To convert a PyTorch checkpoint yourself:
+
+```bash
+uv run python scripts/convert_to_mlx.py \
+  --checkpoint /path/to/rl-refined.pt \
+  --vocab /path/to/vocab.txt \
+  --out-dir /path/to/talkie-1930-13b-it-mlx \
+  --source-repo talkie-lm/talkie-1930-13b-it
+```
 
 ## Quick Start
 
@@ -110,6 +172,18 @@ uv run talkie download all
 # List available models
 uv run talkie list
 ```
+
+## Tests
+
+The correctness suite uses a tiny randomly initialized model and does not
+download model weights:
+
+```bash
+uv run pytest
+uv run --extra mlx pytest  # Torch↔MLX parity and KV-cache coverage
+```
+
+MLX tests skip automatically when MLX or a Metal device is unavailable.
 
 ## License
 

@@ -1,0 +1,71 @@
+{
+  "generated_at": "2026-09-03T00:58:36.497612+00:00",
+  "backend": "mlx",
+  "model_snapshot": "dd65a6e586243a26ddde3fc5ce4e3e0ce4e26500",
+  "model_config": {
+    "vocab_size": 65540,
+    "n_layer": 40,
+    "n_head": 40,
+    "n_embd": 5120,
+    "head_dim": 128,
+    "rope_base": 1000000.0,
+    "max_seq_len": 2048,
+    "dtype": "bfloat16",
+    "style": "it"
+  },
+  "model_init_seconds": 0.14187066699378192,
+  "peak_metal_memory_gib": 26.16341899521649,
+  "mlx_version": "0.32.2",
+  "python_version": "3.14.2",
+  "platform": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+  "hardware": {
+    "Model Name": "MacBook Pro",
+    "Model Identifier": "Mac16,5",
+    "Chip": "Apple M4 Max",
+    "Total Number of Cores": "16 (12 Performance and 4 Efficiency)",
+    "Memory": "64 GB",
+    "System Version": "macOS 26.5.2 (25F84)"
+  },
+  "talkie_revision": "912da948c17ab0733c8dec4aab2b456457e7b887",
+  "talkie_worktree_dirty": false,
+  "results": [
+    {
+      "prompt_tokens": 32,
+      "decode_tokens": 32,
+      "runs": 3,
+      "median_time_to_first_token_seconds": 0.38679591682739556,
+      "median_prefill_tokens_per_second": 82.73096640334943,
+      "median_decode_seconds": 4.587434791959822,
+      "median_decode_tokens_per_second": 6.975575992074018,
+      "time_to_first_token_samples_seconds": [
+        0.21021225000731647,
+        0.404598459135741,
+        0.38679591682739556
+      ],
+      "decode_samples_seconds": [
+        4.842172457836568,
+        4.587434791959822,
+        4.534693707944825
+      ]
+    },
+    {
+      "prompt_tokens": 512,
+      "decode_tokens": 1,
+      "runs": 3,
+      "median_time_to_first_token_seconds": 2.372716958867386,
+      "median_prefill_tokens_per_second": 215.78637860134936,
+      "median_decode_seconds": 0.9725387080106884,
+      "median_decode_tokens_per_second": 1.0282367084858588,
+      "time_to_first_token_samples_seconds": [
+        2.372716958867386,
+        2.3346975420136005,
+        2.4904301669448614
+      ],
+      "decode_samples_seconds": [
+        1.3209224590100348,
+        0.9725387080106884,
+        0.489919374929741
+      ]
+    }
+  ]
+}

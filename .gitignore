@@ -8,3 +8,9 @@ build/
 *.ckpt
 .env
 uv.lock
+docs/archive/
+scripts/_fable_add_temp.py
+.gitignore
+scripts/_fable_interview.py
+scripts/_fable_temperature_sweep.py
+scripts/_fable_interview_2026.py
