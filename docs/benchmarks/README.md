@@ -10,14 +10,14 @@ Measured with the `zimengxiong/talkie-1930-13b-it-mlx` bfloat16 checkpoint:
 
 | Hardware            |                 Shape | Median TTFT |      Prefill |     Decode |
 | ------------------- | --------------------: | ----------: | -----------: | ---------: |
-| Apple M4 Max, 64 GB | 32 prompt / 32 decode |      456 ms |  70.13 tok/s | 6.31 tok/s |
-| Apple M4 Max, 64 GB | 512 prompt / 1 decode |     2.388 s | 214.42 tok/s |          — |
+| Apple M4 Max, 64 GB | 32 prompt / 32 decode |      387 ms |  82.73 tok/s | 6.98 tok/s |
+| Apple M4 Max, 64 GB | 512 prompt / 1 decode |     2.373 s | 215.79 tok/s |          — |
 
 Peak Metal allocator memory was 26.16 GiB. The benchmark used MLX 0.32.2,
 Python 3.14.2, and macOS 26.5.2. See
 [`mlx-m4-max.json`](mlx-m4-max.json) for the raw samples, full model
-configuration, checkpoint snapshot, and Talkie revision. The worktree contained
-the uncommitted benchmark additions when these results were captured.
+configuration, checkpoint snapshot, and Talkie revision. The benchmark started
+from a clean worktree at commit `912da94`.
 
 ## Methodology
 

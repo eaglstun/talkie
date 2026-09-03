@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-03T00:45:09.973855+00:00",
+  "generated_at": "2026-09-03T00:58:36.497612+00:00",
   "backend": "mlx",
   "model_snapshot": "dd65a6e586243a26ddde3fc5ce4e3e0ce4e26500",
   "model_config": {
@@ -13,7 +13,7 @@
     "dtype": "bfloat16",
     "style": "it"
   },
-  "model_init_seconds": 0.1453998328652233,
+  "model_init_seconds": 0.14187066699378192,
   "peak_metal_memory_gib": 26.16341899521649,
   "mlx_version": "0.32.2",
   "python_version": "3.14.2",
@@ -26,37 +26,45 @@
     "Memory": "64 GB",
     "System Version": "macOS 26.5.2 (25F84)"
   },
-  "talkie_revision": "63c1487b7a3b24d616b68abe9cc4c9f2f9ea053a",
-  "talkie_worktree_dirty": true,
+  "talkie_revision": "912da948c17ab0733c8dec4aab2b456457e7b887",
+  "talkie_worktree_dirty": false,
   "results": [
     {
       "prompt_tokens": 32,
       "decode_tokens": 32,
       "runs": 3,
-      "median_time_to_first_token_seconds": 0.45629691588692367,
-      "median_prefill_tokens_per_second": 70.12977490281793,
-      "median_decode_seconds": 5.073102333117276,
-      "median_decode_tokens_per_second": 6.3077773517604,
+      "median_time_to_first_token_seconds": 0.38679591682739556,
+      "median_prefill_tokens_per_second": 82.73096640334943,
+      "median_decode_seconds": 4.587434791959822,
+      "median_decode_tokens_per_second": 6.975575992074018,
       "time_to_first_token_samples_seconds": [
-        0.398061583051458, 0.5113204168155789, 0.45629691588692367
+        0.21021225000731647,
+        0.404598459135741,
+        0.38679591682739556
       ],
       "decode_samples_seconds": [
-        5.138034417061135, 5.073102333117276, 5.020797417033464
+        4.842172457836568,
+        4.587434791959822,
+        4.534693707944825
       ]
     },
     {
       "prompt_tokens": 512,
       "decode_tokens": 1,
       "runs": 3,
-      "median_time_to_first_token_seconds": 2.387782417004928,
-      "median_prefill_tokens_per_second": 214.42489749221707,
-      "median_decode_seconds": 0.30953783285804093,
-      "median_decode_tokens_per_second": 3.230622863663377,
+      "median_time_to_first_token_seconds": 2.372716958867386,
+      "median_prefill_tokens_per_second": 215.78637860134936,
+      "median_decode_seconds": 0.9725387080106884,
+      "median_decode_tokens_per_second": 1.0282367084858588,
       "time_to_first_token_samples_seconds": [
-        2.6061535838525742, 2.3336475829128176, 2.387782417004928
+        2.372716958867386,
+        2.3346975420136005,
+        2.4904301669448614
       ],
       "decode_samples_seconds": [
-        0.2929577089380473, 0.30953783285804093, 0.368145874934271
+        1.3209224590100348,
+        0.9725387080106884,
+        0.489919374929741
       ]
     }
   ]

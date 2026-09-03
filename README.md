@@ -165,6 +165,18 @@ uv run talkie download all
 uv run talkie list
 ```
 
+## Tests
+
+The correctness suite uses a tiny randomly initialized model and does not
+download model weights:
+
+```bash
+uv run pytest
+uv run --extra mlx pytest  # Torch↔MLX parity and KV-cache coverage
+```
+
+MLX tests skip automatically when MLX or a Metal device is unavailable.
+
 ## License
 
 Apache 2.0

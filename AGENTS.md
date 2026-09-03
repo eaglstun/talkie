@@ -27,9 +27,13 @@ but not practically usable at this size.
 
 ### Tests
 
-`pyproject.toml` configures pytest with `testpaths = ["tests"]`, **but there is no
-`tests/` directory** — `uv run pytest` currently collects nothing. If you add tests,
-create `tests/` and they'll be picked up automatically.
+```bash
+uv run pytest                 # Torch, sampling, and chat tests
+uv run --extra mlx pytest     # also exercises Torch↔MLX parity and KV caching
+```
+
+The tests use a randomly initialized tiny model and never download checkpoints.
+MLX tests skip at collection time when MLX or a Metal device is unavailable.
 
 ## Running on Apple Silicon (Mac)
 

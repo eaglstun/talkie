@@ -14,10 +14,13 @@ dependencies = [
 
 [project.optional-dependencies]
 mlx = [
-    "mlx>=0.31.0",
+    "mlx>=0.32.2",
     "numpy",
     "safetensors>=0.7.0",
 ]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
 
 [project.scripts]
 talkie = "talkie.cli:main"
